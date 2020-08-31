@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
+import { useDispatch } from "react-redux";
+import { v4 as uuidv4 } from 'uuid';
+import { useHistory } from 'react-router-dom';
 import { Container, Button, Form, FormGroup, Label, Input } from 'reactstrap';
 
 export default function PostForm() {
+  const dispatch = useDispatch();
+  const history = useHistory();
   const INITIAL_FORM_STATE = {
     title: '',
     description: '',
@@ -17,9 +22,19 @@ export default function PostForm() {
     }))
   };
 
+  const submitHandler = (e) => {
+    e.preventDefault();
+    dispatch({
+      type: 'ADD_POST',
+      post: {...formData},
+      id: uuidv4()
+    })
+    history.push('/')
+  }
+
   return (
     <Container>
-      <Form>
+      <Form onSubmit={submitHandler}>
         <FormGroup>
           <Label for="title-input">Title:</Label>
         <Input type="text" id="title-input" name="title" value={formData.title} onChange={changeHandler} />
