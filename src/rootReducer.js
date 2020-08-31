@@ -6,8 +6,11 @@ export default function rootReducer(state = DEFAULT_STATE, action) {
   switch (action.type) {
     case 'ADD_POST': {
       return {
-        ...state.posts, 
-        [action.id]: action.post
+        ...state,
+        posts: {
+          ...state.posts,
+          [action.id]: action.post
+        }
       }      
     }
     default: 
