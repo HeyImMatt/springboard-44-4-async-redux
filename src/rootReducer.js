@@ -13,6 +13,16 @@ export default function rootReducer(state = DEFAULT_STATE, action) {
         }
       }      
     }
+    case 'DELETE_POST': {
+      const postsCopy = {...state.posts}
+      delete postsCopy[action.id];
+      return {
+        ...state,
+        posts: {
+          ...postsCopy,
+        }
+      }      
+    }
     default: 
       return state;
   }
