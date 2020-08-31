@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Container, Button, Form, FormGroup, Label, Input } from 'reactstrap';
 
-export default function NewBlogForm() {
+export default function PostForm() {
   const INITIAL_FORM_STATE = {
     title: '',
     description: '',
