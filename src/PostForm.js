@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { useHistory } from 'react-router-dom';
 import { Container, Button, Form, FormGroup, Label, Input } from 'reactstrap';
 
-export default function PostForm() {
+export default function PostForm({postEdit, postEditId}) {
   const dispatch = useDispatch();
   const history = useHistory();
   const INITIAL_FORM_STATE = {
@@ -12,7 +12,7 @@ export default function PostForm() {
     description: '',
     body: ''
   };
-  const [formData, setFormData] = useState(INITIAL_FORM_STATE);
+  const [formData, setFormData] = useState(postEdit ? {title: postEdit.title, description: postEdit.description, body: postEdit.body} : INITIAL_FORM_STATE);
 
   const changeHandler = (e) => {
     const {name, value} = e.target;
@@ -24,11 +24,19 @@ export default function PostForm() {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    dispatch({
-      type: 'ADD_POST',
-      post: {...formData},
-      id: uuidv4()
-    })
+    if (postEdit) {
+      dispatch({
+        type: 'EDIT_POST',
+        post: {...formData},
+        id: postEditId
+      })
+    } else {
+      dispatch({
+        type: 'ADD_POST',
+        post: {...formData},
+        id: uuidv4()
+      })
+    }
     history.push('/')
   }
 

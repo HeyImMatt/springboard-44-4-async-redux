@@ -23,6 +23,19 @@ export default function rootReducer(state = DEFAULT_STATE, action) {
         }
       }      
     }
+    case 'EDIT_POST': {
+      const post = state.posts[action.id];
+      post.title = action.post.title;
+      post.description = action.post.description;
+      post.body = action.post.body;
+      return {
+        ...state,
+        posts: {
+          ...state.posts,
+          [action.id]: {...post}
+        }
+      }      
+    }
     default: 
       return state;
   }
