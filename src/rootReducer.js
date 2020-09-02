@@ -36,6 +36,12 @@ export default function rootReducer(state = DEFAULT_STATE, action) {
         }
       }      
     }
+    case 'FETCH_POSTS': {
+      return {
+        ...state,
+        posts: action.posts
+      }
+    }
     default: 
       return state;
   }

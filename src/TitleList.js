@@ -1,19 +1,37 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card, CardTitle, CardText, Row, Col, Container } from 'reactstrap';
 import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch, shallowEqual } from 'react-redux';
+import { fetchPosts } from './actions';
 
 export default function TitleList(){
-  const { posts } = useSelector(store => store)
-  const postsArr = [];
-  for (const [key, value] of Object.entries(posts)) {
-    postsArr.push({id: key, ...value})
+  const [isLoading, setIsLoading] = useState(true);
+  const dispatch = useDispatch();
+  const { posts } = useSelector(store => store, shallowEqual)
+
+  useEffect(function() {
+    async function getPosts(){
+      await dispatch(fetchPosts());
+      setIsLoading(false);
+    }
+
+    if (isLoading) {
+      getPosts();
+    }
+  }, [dispatch, isLoading])
+
+  if (isLoading) {
+    return (
+      <div>
+        Loading...
+      </div>
+    )
   }
 
   return (
     <Container>
       <Row>
-        {postsArr.map(post => (
+        {posts.map(post => (
           <Col sm="6" key={post.id} className="mb-2">
             <Card body>
               <CardTitle><Link to={`/${post.id}`}>{post.title}</Link></CardTitle>
@@ -24,4 +42,5 @@ export default function TitleList(){
       </Row>
     </Container>
   )
+
 }
